@@ -37,7 +37,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers(HttpMethod.GET).authenticated()
+                        .requestMatchers("/auth/**").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(withDefaults());
 
@@ -49,12 +49,12 @@ public class SecurityConfig {
         UserDetails admin = User.builder()
                 .username("admin")
                 .password("password")
-                .roles("ROLE_ADMIN")
+                .roles("ADMIN")
                 .build();
         UserDetails student01 = User.builder()
                 .username("student01")
                 .password("password")
-                .roles("ROLE_STUDENT")
+                .roles("STUDENT")
                 .build();
 
         return new InMemoryUserDetailsManager(admin, student01);
