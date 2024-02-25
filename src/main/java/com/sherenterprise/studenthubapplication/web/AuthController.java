@@ -1,11 +1,13 @@
 package com.sherenterprise.studenthubapplication.web;
 
+import com.sherenterprise.studenthubapplication.Dto.AuthResponseDTO;
 import com.sherenterprise.studenthubapplication.Dto.LoginDTO;
 import com.sherenterprise.studenthubapplication.Dto.RegisterDTO;
 import com.sherenterprise.studenthubapplication.domain.Authority;
 import com.sherenterprise.studenthubapplication.domain.UserEntity;
 import com.sherenterprise.studenthubapplication.repository.AuthorityRepository;
 import com.sherenterprise.studenthubapplication.repository.UserRepository;
+import com.sherenterprise.studenthubapplication.security.JWTGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,24 +32,29 @@ public class AuthController {
     private UserRepository userRepository;
     private AuthorityRepository authorityRepository;
     private PasswordEncoder passwordEncoder;
+    private JWTGenerator jwtGenerator;
 
     @Autowired
     public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository,
-                          AuthorityRepository authorityRepository, PasswordEncoder passwordEncoder) {
+                          AuthorityRepository authorityRepository, PasswordEncoder passwordEncoder,
+                          JWTGenerator jwtGenerator) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.authorityRepository = authorityRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtGenerator = jwtGenerator;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDTO loginDto) {
+    public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginDTO loginDto) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginDto.getUsername(), loginDto.getPassword()
                 ));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new ResponseEntity<>("The username is logged in successfully!", HttpStatus.OK);
+        String token = jwtGenerator.generateToken(authentication);
+
+        return new ResponseEntity<>(new AuthResponseDTO(token), HttpStatus.OK);
     }
 
     @PostMapping("/register")
@@ -68,4 +75,5 @@ public class AuthController {
 
         return new ResponseEntity<>("Username is successfully registered!", HttpStatus.OK);
     }
+
 }
