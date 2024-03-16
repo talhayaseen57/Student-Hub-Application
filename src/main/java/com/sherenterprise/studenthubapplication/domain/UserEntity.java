@@ -52,4 +52,5 @@ public class UserEntity {
     public void setAuthorities(List<Authority> authorities) {
         this.authorities = authorities;
     }
+
 }
