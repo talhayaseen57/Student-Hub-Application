@@ -1,7 +1,5 @@
 package com.sherenterprise.studenthubapplication.Dto;
 
-import java.time.LocalDate;
-
 public class LoginDTO {
 
     private String username;
