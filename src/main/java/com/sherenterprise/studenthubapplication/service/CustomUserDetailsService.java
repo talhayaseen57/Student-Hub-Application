@@ -28,10 +28,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity loadedUser = userRepository.findByUsername(username).orElseThrow(
+        UserEntity optUser = userRepository.findByUsername(username).orElseThrow(
                 () -> new UsernameNotFoundException("The given username is incorrect."));
 
-        return new User(loadedUser.getUsername(), loadedUser.getPassword(), mapAuthorities(loadedUser.getAuthorities()));
+        return new User(optUser.getUsername(), optUser.getPassword(), mapAuthorities(optUser.getAuthorities()));
     }
 
     private Collection<GrantedAuthority> mapAuthorities(List<Authority> authorities) {

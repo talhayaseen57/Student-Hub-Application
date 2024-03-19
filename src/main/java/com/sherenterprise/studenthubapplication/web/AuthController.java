@@ -46,6 +46,18 @@ public class AuthController {
     }
 
     @PostMapping("/login")
+//    public ResponseEntity<?> login (@RequestBody LoginDTO loginDTO) {
+//        try {
+//            Authentication authentication = authenticationManager.authenticate(
+//                    new UsernamePasswordAuthenticationToken(
+//                            loginDTO.getUsername(), loginDTO.getPassword()
+//                    ));
+//            SecurityContextHolder.getContext().setAuthentication(authentication);
+//        } catch (Exception e) {
+//
+//        }
+//        return new ResponseEntity<>("Login Successful", HttpStatus.OK);
+//    }
     public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginDTO loginDto) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
