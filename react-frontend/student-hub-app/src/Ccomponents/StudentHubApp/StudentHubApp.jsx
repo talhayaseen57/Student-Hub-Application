@@ -8,7 +8,7 @@ export const StudentHubApp = () => {
         'password': '102'
     }
 
-    fetch('http://localhost:3000/auth/login', {
+    fetch('http://localhost:8080/auth/login', {
         headers: {
             'Content-Type': 'application/json'
         },
