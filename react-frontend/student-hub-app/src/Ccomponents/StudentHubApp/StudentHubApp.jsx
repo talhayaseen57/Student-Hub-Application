@@ -14,7 +14,9 @@ export const StudentHubApp = () => {
         },
         method: 'post',
         body: JSON.stringify(requestBody)
-    }).then((response) => console.log(response));
+    })
+        .then((response) => response.json())
+        .then((data) => console.log(data));
 
 
     return (
@@ -22,5 +24,5 @@ export const StudentHubApp = () => {
             <div>Student Hub Application</div>
         </div>
     );
-    
+
 }
